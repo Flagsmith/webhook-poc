@@ -10,5 +10,8 @@ export default function handler(
   res: NextApiResponse<Data>
 ) {
   console.log(Object.keys(req.body))
+  console.log(req.body.action, "ACTION")
+  console.log(req.body.changes, "CHANGES")
+  console.log(req.body.comment, "COMMENT")
   res.status(200).json({ name: 'John Doe' })
 }
