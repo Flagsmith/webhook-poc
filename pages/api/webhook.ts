@@ -207,8 +207,7 @@ export default async function handler(
   res: NextApiResponse
 ) {
   const body:Data = req.body;
-  console.log(body.repository.owner.id, body.repository.id, body.issue.id);
-  await createComment(body.repository.owner.login, body.repository.name, body.issue.id, "Test")
+  await createComment(body.repository.owner.login, body.repository.name, body.issue.number, "Test")
   res.json({ok:1})
 
 }
