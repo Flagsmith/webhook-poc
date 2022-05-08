@@ -208,7 +208,7 @@ export default async function handler(
 ) {
   const body:Data = req.body;
   console.log(body.repository.owner.id, body.repository.id, body.issue.id);
-  await createComment(body.repository.owner.id, body.repository.id, body.issue.id, "Test")
+  await createComment(body.repository.owner.login, body.repository.name, body.issue.id, "Test")
   res.json({ok:1})
 
 }
