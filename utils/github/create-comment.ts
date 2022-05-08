@@ -37,6 +37,9 @@ export default async function (owner:number, repo:number, issue:number, body: st
     const token = await githubClient(`${process.env.GITHUB_INSTALLATION_ID}`)
     await fetch(`https://api.github.com/repos/${owner}/${repo}/issues/${issue}/comments`, {
         method: "POST",
-        body
+        body,
+        headers: {
+            "Authorization": `Bearer ${token}`
+        }
     })
 }
