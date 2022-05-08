@@ -42,4 +42,6 @@ export default async function (owner:number, repo:number, issue:number, body: st
             "Authorization": `Bearer ${token}`
         }
     })
+        .then((res)=>res.text())
+        .then((res)=>console.log(res))
 }
