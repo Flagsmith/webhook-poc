@@ -9,6 +9,5 @@ export default async function handler(
   req: NextApiRequest,
   res: NextApiResponse<Data>
 ) {
-  const token = await githubClient(`${process.env.GITHUB_INSTALLATION_ID}`)
-  res.json({token:"ok"})
+
 }
