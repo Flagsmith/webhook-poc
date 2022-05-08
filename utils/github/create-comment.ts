@@ -35,6 +35,7 @@ interface IComments {
 
 export default async function (owner:string, repo:string, issue:number, body: string) {
     const token = await githubClient(`${process.env.GITHUB_INSTALLATION_ID}`)
+    console.log(`https://api.github.com/repos/${owner}/${repo}/issues/${issue}/comments`)
     await fetch(`https://api.github.com/repos/${owner}/${repo}/issues/${issue}/comments`, {
         method: "POST",
         body: JSON.stringify({body}),
