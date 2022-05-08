@@ -1,11 +1,19 @@
 import dotEnv from 'dotenv'
 dotEnv.config()
-type IEnvironments = {
+
+export interface IEnvironments {
+    count: number;
+    next?: any;
+    previous?: any;
     results: {
-        name: string
-        api_key: string
-    }[]
+        id: number;
+        name: string;
+        api_key: string;
+        project: number;
+        minimum_change_request_approvals?: any;
+    }[];
 }
+
 export default function (project:string) {
     const key = process.env.FLAGSMITH_TOKEN
     return fetch(`https://api.flagsmith.com/api/v1/environments/?project=${project}`,{
@@ -15,11 +23,6 @@ export default function (project:string) {
     })
         .then((res)=>res.json())
         .then((res:IEnvironments)=>{
-            console.log(res)
-            let environments: Record<string, string> = {}
-            res.results.map((v)=>{
-                environments[v.name] = v.api_key
-            })
-            return environments
+            return res
         })
 }

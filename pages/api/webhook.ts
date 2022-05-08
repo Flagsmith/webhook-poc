@@ -13,5 +13,6 @@ export default function handler(
   console.log(req.body.action, "ACTION")
   console.log(req.body.changes, "CHANGES")
   console.log(req.body.comment, "COMMENT")
+  console.log(req.body.installation, "INSTALLATION")
   res.status(200).json({ name: 'John Doe' })
 }
