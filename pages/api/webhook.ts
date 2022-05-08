@@ -208,7 +208,8 @@ export default async function handler(
 ) {
   const body:Data = req.body;
   console.log(Object.keys(req.body))
-  console.log(req.body.repository, "repository")
-  console.log(req.body.organization, "organization")
+  console.log(req.body.comment, "comment")
+  console.log(req.body.sender, "sender")
+  // console.log(req.body.organization, "organization")
   res.status(200).json({ name: 'John Doe' })
 }
