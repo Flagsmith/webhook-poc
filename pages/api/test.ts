@@ -13,7 +13,7 @@ export default async function handler(
   res: NextApiResponse<Data>
 ) {
   const token = await githubClient(process.env.GITHUB_INSTALLATION_ID)
-  await createComment('Flagsmith', 'flagsmith', 1228627553, `Checklist
+  await createComment('Flagsmith', 'flagsmith', 1067, `Checklist
 - [ ] Development 
 - [ ] Production
   `)
