@@ -45,7 +45,7 @@ type Data = {
 
 export default function handler(
   req: NextApiRequest,
-  res: NextApiResponse<Data>
+  res: NextApiResponse
 ) {
   const body:Data = req.body;
   console.log(Object.keys(req.body))
