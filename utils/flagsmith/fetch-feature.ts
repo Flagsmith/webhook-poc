@@ -44,7 +44,7 @@ export interface IFeatureSegmentsEnvironment {
     environment: number
     featureSegments: IFeatureSegments
 }[]
-export type IFeatureWithSegment = IFeature & {segment?:ISegment}
+export type IFeatureWithSegment = IFeature & {segment?:ISegment|null}
 export type IFeaturesResults = {
     environment: IEnvironment
     features: IFeatureWithSegment[]
@@ -90,7 +90,7 @@ export default async function (project:string, feature:string) {
 
                 return {
                     ...v,
-                    segment: segment && segments.results.find((v)=>v.id === segment.segment)
+                    segment: segment ? segments.results.find((v)=>v.id === segment.segment) : null
                 }
             })
         }
