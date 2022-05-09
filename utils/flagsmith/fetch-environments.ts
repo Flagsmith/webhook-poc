@@ -1,17 +1,19 @@
 import dotEnv from 'dotenv'
 dotEnv.config()
 
+export interface IEnvironment {
+    id: number;
+    name: string;
+    api_key: string;
+    project: number;
+    minimum_change_request_approvals?: any;
+}
+
 export interface IEnvironments {
     count: number;
     next?: any;
     previous?: any;
-    results: {
-        id: number;
-        name: string;
-        api_key: string;
-        project: number;
-        minimum_change_request_approvals?: any;
-    }[];
+    results: IEnvironment[];
 }
 
 export default function (project:string) {

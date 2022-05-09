@@ -1,32 +1,33 @@
 import dotEnv from 'dotenv'
 dotEnv.config()
-export interface ISegments {
-    count: number;
-    next?: any;
-    previous?: any;
-    results: {
-        id: number;
+export interface ISegment {
+    id: number;
+    rules: {
+        type: string;
         rules: {
             type: string;
-            rules: {
-                type: string;
-                rules: any[];
-                conditions: {
-                    operator: string;
-                    property: string;
-                    value: string;
-                }[];
-            }[];
+            rules: any[];
             conditions: {
                 operator: string;
                 property: string;
                 value: string;
             }[];
         }[];
-        name: string;
-        description: string;
-        project: number;
+        conditions: {
+            operator: string;
+            property: string;
+            value: string;
+        }[];
     }[];
+    name: string;
+    description: string;
+    project: number;
+}
+export interface ISegments {
+    count: number;
+    next?: any;
+    previous?: any;
+    results: ISegment[];
 }
 
 export default function (projectId:string) {
