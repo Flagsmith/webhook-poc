@@ -58,7 +58,6 @@ type Data =  {
     };
     event_type: string;
 }
-`${body.data.new_state.feature.project.id}`, `${body.data.new_state.feature.id}`
 export default async function handler(
     req: NextApiRequest,
     res: NextApiResponse<Data>
