@@ -1,8 +1,10 @@
 import { IFeaturesResults} from "../flagsmith/fetch-feature";
 import moment from 'moment'
-import xml from "libxmljs";
+import xml from "fast-xml-parser";
 import toml from 'toml'
 import yaml from 'yaml'
+const parser = new xml.XMLParser();
+
 export default function (data:IFeaturesResults[]) {
     return `Flagsmith Feature:
 ${data.map((v)=>{
@@ -11,15 +13,9 @@ ${v.features.map((v)=>{
             let featureValue = v.feature_state_value.integer_value || v.feature_state_value.string_value || v.feature_state_value.boolean_value
             let language = ''
                 try {
-                    xml.parseHtml(featureValue)
+                    parser.parse(featureValue)
                     language = 'xml'
                 } catch (e) {
-                    try {
-                        xml.parseHtml(featureValue)
-                        language = 'html'
-                    } catch (e) {
-                        
-                    }
                     try {
                         yaml.parse(featureValue)
                         language = 'yaml'
