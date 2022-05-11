@@ -5,11 +5,13 @@ export default function (data:IFeaturesResults[]) {
 ${data.map((v)=>{
         return `**${v.environment.name}**
 ${v.features.map((v)=>{
-return `- [${v.enabled?'x':' '}] ${v.segment?v.segment.name:'Environment Default'}${v.feature_state_value?
+            const featureValue = v.feature_state_value.integer_value || v.feature_state_value.string_value || v.feature_state_value.boolean_value
+            const hasFeature = featureValue!=null && typeof featureValue!='undefined'
+            return `- [${v.enabled?'x':' '}] ${v.segment?v.segment.name:'Environment Default'}${hasFeature?
 `
 Value: 
 \`\`\`
-${v.feature_state_value.integer_value || v.feature_state_value.string_value || v.feature_state_value.boolean_value}
+${featureValue}
 \`\`\`
 `:''}`
 }).join("\n")}
