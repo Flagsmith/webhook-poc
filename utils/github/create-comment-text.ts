@@ -9,7 +9,6 @@ ${v.features.map((v)=>{
             const hasFeature = featureValue!=null && typeof featureValue!='undefined'
             return `- [${v.enabled?'x':' '}] ${v.segment?v.segment.name:'Environment Default'}${hasFeature?
 `
-Value: 
 \`\`\`
 ${featureValue}
 \`\`\`
