@@ -14,7 +14,7 @@ ${data.map((featureResults)=>{
 ${featureValue}
 \`\`\`
 `:''
-            return `**${featureResults.environment.name}${v.segment?.name?` ${v.segment.name}`:""}**
+            return `**${featureResults.environment.name}${v.segment?.name?` - ${v.segment.name}`:""}**
             - [${v.enabled?'x':' '}] Enabled${featureValueString}`
 }).join("\n")}
 `}).join("\n")}
