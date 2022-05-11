@@ -23,7 +23,7 @@ ${v.features.map((v)=>{
                             language = 'ini'
                         } catch (e) {
                             try {
-                                JSON.parse(featureValue, null, 2)
+                                JSON.parse(featureValue)
                                 language = 'json'
                             } catch (e) {
                                 try {
