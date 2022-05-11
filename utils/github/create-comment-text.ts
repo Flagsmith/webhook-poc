@@ -6,9 +6,8 @@ import yaml from 'yaml'
 
 export default function (data:IFeaturesResults[]) {
     return `Flagsmith Feature:
-${data.map((v)=>{
-        return `**${v.environment.name}**
-${v.features.map((v)=>{
+${data.map((featureResults)=>{
+        return `${featureResults.features.map((v)=>{
             let featureValue = v.feature_state_value.integer_value || v.feature_state_value.string_value || v.feature_state_value.boolean_value
             let language = ''
                 try {
@@ -38,7 +37,8 @@ ${v.features.map((v)=>{
             
             
             const hasFeature = featureValue!=null && typeof featureValue!='undefined'
-            return `- [${v.enabled?'x':' '}] ${v.segment?v.segment.name:'Environment Default'}${hasFeature?
+            return `**${featureResults.environment.name} ${v.segment?.name?` ${v.segment.name}`:""}**
+            - [${v.enabled?'x':' '}${hasFeature?
 `
 \`\`\`${language}
 ${featureValue}
