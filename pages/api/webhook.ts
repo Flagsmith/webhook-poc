@@ -239,7 +239,9 @@ export default async function handler(
 ) {
   const body:Data = req.body;
   if (body.sender.type === 'User') {
+    console.log(body.issue.id)
     // set feature states based on comment
+    console.log(body.changes.body)
   }
   // console.log(req.body.organization, "organization")
   res.status(200).json({ name: 'John Doe' })
