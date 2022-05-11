@@ -7,9 +7,11 @@ ${data.map((v)=>{
 ${v.features.map((v)=>{
 return `- [${v.enabled?'x':' '}] ${v.segment?v.segment.name:'Environment Default'}${v.feature_state_value?
 `
-Value: \`\`\`
-${v.feature_state_value}
-\`\`\``:''}`
+Value: 
+\`\`\`
+${v.feature_state_value.integer_value || v.feature_state_value.string_value || v.feature_state_value.boolean_value}
+\`\`\`
+`:''}`
 }).join("\n")}
 `}).join("\n")}
 
