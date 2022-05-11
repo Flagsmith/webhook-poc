@@ -15,7 +15,7 @@ ${featureValue}
 \`\`\`
 `:''
             return `**${featureResults.environment.name}${v.segment?.name?` - ${v.segment.name}`:""}**
-- [${v.enabled?'x':' '}] Enabled${featureValueString}`
+- [${v.enabled?'x':' '}] ${v.enabled?'Enabled': 'Disabled'}${featureValueString}`
 }).join("\n")}
 `}).join("\n")}
 
