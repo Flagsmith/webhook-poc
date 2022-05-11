@@ -11,15 +11,15 @@ ${v.features.map((v)=>{
             let featureValue = v.feature_state_value.integer_value || v.feature_state_value.string_value || v.feature_state_value.boolean_value
             let language = ''
                 try {
-                    const x = new jsdom.JSDOM(featureValue).serialize()
+                    new jsdom.JSDOM(featureValue).serialize()
                     language = 'xml'
                 } catch (e) {
                     try {
-                        const x =  yaml.parse(featureValue)
+                        yaml.parse(featureValue)
                         language = 'yaml'
                     } catch (e) {
                         try {
-                            const x =  toml.parse(featureValue)
+                            toml.parse(featureValue)
                             language = 'toml'
                         } catch (e) {
                             try {
