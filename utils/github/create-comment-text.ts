@@ -20,7 +20,7 @@ ${v.features.map((v)=>{
                     } catch (e) {
                         try {
                             toml.parse(featureValue)
-                            language = 'toml'
+                            language = 'ini'
                         } catch (e) {
                             try {
                                 JSON.stringify(featureValue, null, 2)
