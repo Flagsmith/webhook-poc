@@ -232,7 +232,9 @@ export interface Data {
     body: string;
   }
 }
-
+const parseCommentValue = (value:string)=> {
+  return value.replace(/```.*?\n/g,"").replace(/\n```/g,"")
+}
 export default async function handler(
   req: NextApiRequest,
   res: NextApiResponse
@@ -241,7 +243,12 @@ export default async function handler(
   if (body.sender.type === 'User') {
     console.log(body.issue.id)
     // set feature states based on comment
-    console.log(body.changes.body)
+    const comment = body.comment.body;
+    const [initial,...rest] = comment.split(/\*\*(.*?)\*\*/g)
+    rest.forEach((v)=>{
+      const parsedValue = v.replace(/Last Updated.*/s,"")
+    })
+
   }
   // console.log(req.body.organization, "organization")
   res.status(200).json({ name: 'John Doe' })
