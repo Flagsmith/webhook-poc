@@ -18,10 +18,6 @@ ${v.features.map((v)=>{
                     }
                     language = 'xml'
                 } catch (e) {
-                    try {
-                        yaml.parse(featureValue)
-                        language = 'yaml'
-                    } catch (e) {
                         try {
                             toml.parse(featureValue)
                             language = 'ini'
@@ -30,10 +26,14 @@ ${v.features.map((v)=>{
                                 JSON.stringify(featureValue, null, 2)
                                 language = 'json'
                             } catch (e) {
+                                try {
+                                    yaml.parse(featureValue)
+                                    language = 'yaml'
+                                } catch (e) {
                                 
+                                }
                             }
                         }
-                    }
                 }
             
             
