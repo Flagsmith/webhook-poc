@@ -37,8 +37,8 @@ ${data.map((featureResults)=>{
             
             
             const hasFeature = featureValue!=null && typeof featureValue!='undefined'
-            return `**${featureResults.environment.name} ${v.segment?.name?` ${v.segment.name}`:""}**
-            - [${v.enabled?'x':' '} Enabled${hasFeature?
+            return `**${featureResults.environment.name}${v.segment?.name?` ${v.segment.name}`:""}**
+            - [${v.enabled?'x':' '}] Enabled${hasFeature?
 `
 \`\`\`${language}
 ${featureValue}
