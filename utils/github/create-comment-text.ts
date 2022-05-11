@@ -5,11 +5,18 @@ export default function (data:IFeaturesResults[]) {
 ${data.map((v)=>{
         return `**${v.environment.name}**
 ${v.features.map((v)=>{
-            const featureValue = v.feature_state_value.integer_value || v.feature_state_value.string_value || v.feature_state_value.boolean_value
+            let featureValue = v.feature_state_value.integer_value || v.feature_state_value.string_value || v.feature_state_value.boolean_value
+            let isJSON = false;
+            try {
+                featureValue = JSON.stringify(featureValue, null, 2)
+                isJSON = true
+            } catch (e) {
+                
+            }
             const hasFeature = featureValue!=null && typeof featureValue!='undefined'
             return `- [${v.enabled?'x':' '}] ${v.segment?v.segment.name:'Environment Default'}${hasFeature?
 `
-\`\`\`
+\`\`\`${isJSON?'json':""}
 ${featureValue}
 \`\`\`
 `:''}`
