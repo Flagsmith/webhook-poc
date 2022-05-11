@@ -3,7 +3,6 @@ import moment from 'moment'
 import xml from "fast-xml-parser";
 import toml from 'toml'
 import yaml from 'yaml'
-const parser = new xml.XMLParser();
 
 export default function (data:IFeaturesResults[]) {
     return `Flagsmith Feature:
@@ -13,7 +12,10 @@ ${v.features.map((v)=>{
             let featureValue = v.feature_state_value.integer_value || v.feature_state_value.string_value || v.feature_state_value.boolean_value
             let language = ''
                 try {
-                    parser.parse(featureValue)
+                    const x = xml.XMLValidator.validate(featureValue)
+                    if (x!== true) {
+                        throw new Error("error")
+                    }
                     language = 'xml'
                 } catch (e) {
                     try {
