@@ -5,7 +5,11 @@ export default function (data:IFeaturesResults[]) {
 ${data.map((v)=>{
         return `**${v.environment.name}**
 ${v.features.map((v)=>{
-return `- [${v.enabled?'x':' '}] ${v.segment?v.segment.name:'Environment Default'}`
+return `- [${v.enabled?'x':' '}] ${v.segment?v.segment.name:'Environment Default'}${v.feature_state_value?
+`
+Value: \`\`\`
+${v.feature_state_value}
+\`\`\``:''}`
 }).join("\n")}
 `}).join("\n")}
 
