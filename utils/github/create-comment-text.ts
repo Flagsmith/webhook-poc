@@ -1,22 +1,42 @@
 import { IFeaturesResults} from "../flagsmith/fetch-feature";
 import moment from 'moment'
+import jsdom from 'jsdom'
+import toml from 'toml'
+import yaml from 'yaml'
 export default function (data:IFeaturesResults[]) {
     return `Flagsmith Feature:
 ${data.map((v)=>{
         return `**${v.environment.name}**
 ${v.features.map((v)=>{
             let featureValue = v.feature_state_value.integer_value || v.feature_state_value.string_value || v.feature_state_value.boolean_value
-            let isJSON = false;
-            try {
-                JSON.stringify(featureValue, null, 2)
-                isJSON = true
-            } catch (e) {
-                
-            }
+            let language = ''
+                try {
+                    const x = new jsdom.JSDOM(featureValue).serialize()
+                    language = 'xml'
+                } catch (e) {
+                    try {
+                        const x =  yaml.parse(featureValue)
+                        language = 'yaml'
+                    } catch (e) {
+                        try {
+                            const x =  toml.parse(featureValue)
+                            language = 'toml'
+                        } catch (e) {
+                            try {
+                                JSON.stringify(featureValue, null, 2)
+                                language = 'json'
+                            } catch (e) {
+                                
+                            }
+                        }
+                    }
+                }
+            
+            
             const hasFeature = featureValue!=null && typeof featureValue!='undefined'
             return `- [${v.enabled?'x':' '}] ${v.segment?v.segment.name:'Environment Default'}${hasFeature?
 `
-\`\`\`${isJSON?'json':""}
+\`\`\`${language}
 ${featureValue}
 \`\`\`
 `:''}`
