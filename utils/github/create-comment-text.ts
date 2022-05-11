@@ -8,7 +8,7 @@ ${v.features.map((v)=>{
             let featureValue = v.feature_state_value.integer_value || v.feature_state_value.string_value || v.feature_state_value.boolean_value
             let isJSON = false;
             try {
-                featureValue = JSON.stringify(featureValue, null, 2)
+                JSON.stringify(featureValue, null, 2)
                 isJSON = true
             } catch (e) {
                 
