@@ -1,6 +1,7 @@
 import {IFeaturesResults} from "../flagsmith/api/fetch-feature";
 import moment from 'moment'
 import parseLanguage from "../parseLanguage";
+import mockedConstants from "../mockedConstants";
 
 const title = '### This pull request is linked to a Flagsmith Feature'
 const openingMarkdown = (language:string)=>`\`\`\`${language}`
@@ -15,11 +16,11 @@ ${data.map((featureResults)=>{
             let featureValue = v.feature_state_value.integer_value || v.feature_state_value.string_value || v.feature_state_value.boolean_value
             const hasFeatureValue = featureValue!=null && typeof featureValue!='undefined'
             let language = hasFeatureValue ? parseLanguage(featureValue) : ''
-            const featureValueString = hasFeatureValue? `
+            const featureValueString =  `
 ${openingMarkdown(language||'')}
-${featureValue}
+${hasFeatureValue?featureValue:mockedConstants.featureNoValue}
 ${closingMarkdown}
-`:''
+`
             return `**${featureResults.environment.name}${v.segment?.name?` - ${v.segment.name}`:""}**
 - [${v.enabled?'x':' '}] ${v.enabled?'Enabled': 'Disabled'}${featureValueString}`
 }).join("\n")}

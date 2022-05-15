@@ -2,6 +2,7 @@
 
 import {IEnvironments} from "../flagsmith/api/fetch-environments";
 import {ISegments} from "../flagsmith/api/fetch-segments";
+import mockedConstants from "../mockedConstants";
 
 type IEnvironmentValues = { enabled: boolean, environment: number, environmentKey: string, value: any, segment?: number }
 
@@ -27,7 +28,7 @@ export default function (comment: string, environments: IEnvironments, segments:
             environmentValues.push({
                 enabled: enabled,
                 segment: currentSegment,
-                value,
+                value: value === mockedConstants.featureNoValue?undefined:value,
                 environmentKey: currentEnvironmentKey!,
                 environment: currentEnvironment!
             })
