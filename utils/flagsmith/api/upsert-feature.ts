@@ -50,7 +50,7 @@ export default async function (features:IFeaturesResults[],feature:number, envir
             }
         })
     })
-    const payload = {environment,feature,feature_segment: segment, enabled:true, feature_state_value: getTypedValue(value)}
+    const payload = {environment,feature,feature_segment: segment, enabled, feature_state_value: getTypedValue(value)}
     if(!matchingFeature) {
         return fetch(`https://api.flagsmith.com/api/v1/environments/${environment_key}/featurestates/`,{
           method:"POST",
