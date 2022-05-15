@@ -244,7 +244,7 @@ export default async function handler(
   res: NextApiResponse
 ) {
   const body:Data = req.body;
-  if (true || body.sender.type === 'User') {
+  if (body.sender.type === 'User') {
     // set feature states based on comment
     // gives us => ["production, "\n- [x] Enabled\n```undefined\n<div/>\n```\n\n", "Development", "\n - []...]
     const comment = body?.comment?.body || `### This pull request is linked to a Flagsmith Feature
