@@ -3,6 +3,7 @@ import type { NextApiRequest, NextApiResponse } from 'next'
 import fetchFeature from "../../utils/flagsmith/api/fetch-feature";
 import mockedConstants from "../../utils/mockedConstants";
 import fetchEnvironments from "../../utils/flagsmith/api/fetch-environments";
+import parseComment from "../../utils/github/parse-comment";
 
 
 export interface Data {
@@ -234,9 +235,7 @@ export interface Data {
     body: string;
   }
 }
-const parseCommentValue = (value:string)=> {
-  return value.replace(/```.*?\n/g,"").replace(/\n```/g,"")
-}
+
 export default async function handler(
   req: NextApiRequest,
   res: NextApiResponse
@@ -244,12 +243,11 @@ export default async function handler(
   const body:Data = req.body;
   console.log("Sender", body.sender)
   if (body.sender.type === 'User') {
-    console.log(body.issue.id)
     // set feature states based on comment
     // gives us => ["production, "\n- [x] Enabled\n```undefined\n<div/>\n```\n\n", "Development", "\n - []...]
     const comment = body.comment.body;
     // split by ** Environment **, every even line is a value
-    const featureValues = parseCommentValue(comment)
+    const featureValues = parseComment(comment)
     const environments = await fetchEnvironments(mockedConstants.project)
     const features = await fetchFeature(mockedConstants.project, mockedConstants.flag)
     console.log(featureValues)
