@@ -1,6 +1,8 @@
 const { createAppAuth } = require('@octokit/auth-app');
 
 let _token:string;
+
+//authorises with GitHub
 export default async function (installationId:string) {
     if(_token) return _token
     const auth = createAppAuth({

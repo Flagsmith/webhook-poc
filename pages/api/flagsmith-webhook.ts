@@ -1,9 +1,9 @@
 // Next.js API route support: https://nextjs.org/docs/api-routes/introduction
 import type { NextApiRequest, NextApiResponse } from 'next'
-import fetchFeature from "../../utils/flagsmith/fetch-feature";
+import fetchFeature from "../../utils/flagsmith/api/fetch-feature";
 import mockedConstants from "../../utils/mockedConstants";
 import createCommentText from "../../utils/github/create-comment-text";
-import editComment from "../../utils/github/edit-comment";
+import editComment from "../../utils/github/api/edit-comment";
 
 type Data =  {
     data: {

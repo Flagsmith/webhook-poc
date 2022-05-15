@@ -2,6 +2,7 @@ import xml from "fast-xml-parser";
 import toml from "toml";
 import yaml from "yaml";
 
+// Based on a value string, this will attempt to figure out the language
 export default function parseLanguage(featureValue:string) {
     let language = ''
     try {

@@ -1,6 +1,8 @@
 // Next.js API route support: https://nextjs.org/docs/api-routes/introduction
 import type { NextApiRequest, NextApiResponse } from 'next'
-import createComment from "../../utils/github/create-comment";
+import fetchFeature from "../../utils/flagsmith/api/fetch-feature";
+import mockedConstants from "../../utils/mockedConstants";
+import fetchEnvironments from "../../utils/flagsmith/api/fetch-environments";
 
 
 export interface Data {
@@ -243,12 +245,13 @@ export default async function handler(
   if (body.sender.type === 'User') {
     console.log(body.issue.id)
     // set feature states based on comment
+    // gives us => ["production, "\n- [x] Enabled\n```undefined\n<div/>\n```\n\n", "Development", "\n - []...]
     const comment = body.comment.body;
-    const [initial,...rest] = comment.split(/\*\*(.*?)\*\*/g)
-    rest.forEach((v)=>{
-      const parsedValue = v.replace(/Last Updated.*/s,"")
-    })
-
+    // split by ** Environment **, every even line is a value
+    const featureValues = parseCommentValue(comment)
+    const environments = await fetchEnvironments(mockedConstants.project)
+    const features = await fetchFeature(mockedConstants.project, mockedConstants.flag)
+    console.log(featureValues)
   }
   // console.log(req.body.organization, "organization")
   res.status(200).json({ name: 'John Doe' })
