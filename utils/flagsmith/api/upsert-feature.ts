@@ -1,4 +1,31 @@
 import {IFeaturesResults, IFeatureWithSegment} from "./fetch-feature";
+function valueToFeatureState(value:any) {
+    const val = getTypedValue(value)
+    if (typeof val === 'boolean') {
+        return {
+            type: 'bool',
+            boolean_value: val,
+            integer_value: null,
+            string_value: null,
+        };
+    }
+
+    if (typeof val === 'number') {
+        return {
+            type: 'int',
+            boolean_value: null,
+            integer_value: val,
+            string_value: null,
+        };
+    }
+
+    return {
+        type: 'unicode',
+        boolean_value: null,
+        integer_value: null,
+        string_value: value === null? null : val || '',
+    };
+}
 function getTypedValue(str:any, boolToString?:boolean) {
     if (typeof str === 'undefined') {
         return '';
@@ -50,7 +77,7 @@ export default async function (features:IFeaturesResults[],feature:number, envir
             }
         })
     })
-    const payload = {environment,feature,feature_segment: segment, enabled, feature_state_value: getTypedValue(value)}
+    const payload = {environment,feature,feature_segment: segment, enabled: true, feature_state_value: getTypedValue(value)}
     if(!matchingFeature) {
         return fetch(`https://api.flagsmith.com/api/v1/environments/${environment_key}/featurestates/`,{
           method:"POST",
@@ -60,19 +87,37 @@ export default async function (features:IFeaturesResults[],feature:number, envir
             },
           body: JSON.stringify(payload)
         }).then((res)=>res.text()).then((res)=>{
-            console.log(res)
             return res
         })
     } else {
+        if(segment) {
+            return fetch(`https://api.flagsmith.com/api/v1/features/featurestates/${matchingFeature?.id}/`,{
+                method:"PUT",
+                headers: {
+                    AUTHORIZATION: `Token ${process.env.FLAGSMITH_TOKEN}`,
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify({
+                    ...matchingFeature,
+                    feature,
+                    enabled,
+                    feature_state_value:valueToFeatureState(value),
+                    segment:undefined
+                })
+            }).then((res)=>res.text()).then((res)=>{
+                return res
+            })
+        }
         return fetch(`https://api.flagsmith.com/api/v1/environments/${environment_key}/featurestates/${matchingFeature?.id}/`,{
             method:"PUT",
             headers: {
                 AUTHORIZATION: `Token ${process.env.FLAGSMITH_TOKEN}`,
                 "Content-Type": "application/json",
             },
-            body: JSON.stringify({...matchingFeature,...payload})
+            body: JSON.stringify({...matchingFeature,...payload, segment:undefined})
         }).then((res)=>res.text()).then((res)=>{
             return res
         })
     }
 }
+
