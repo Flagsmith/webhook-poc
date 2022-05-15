@@ -4,6 +4,9 @@ import fetchFeature from "../../utils/flagsmith/api/fetch-feature";
 import mockedConstants from "../../utils/mockedConstants";
 import fetchEnvironments from "../../utils/flagsmith/api/fetch-environments";
 import parseComment from "../../utils/github/parse-comment";
+import FetchSegments from "../../utils/flagsmith/api/fetch-segments";
+import fetchSegments from "../../utils/flagsmith/api/fetch-segments";
+import upsertFeature from "../../utils/flagsmith/api/upsert-feature";
 
 
 export interface Data {
@@ -242,15 +245,40 @@ export default async function handler(
 ) {
   const body:Data = req.body;
   console.log("Sender", body.sender)
-  if (body.sender.type === 'User') {
+  if (true || body.sender.type === 'User') {
     // set feature states based on comment
     // gives us => ["production, "\n- [x] Enabled\n```undefined\n<div/>\n```\n\n", "Development", "\n - []...]
-    const comment = body.comment.body;
+    const comment = body?.comment?.body || `### This pull request is linked to a Flagsmith Feature
+**Production**
+- [x] Disabled
+
+**Development**
+- [ ] Enabled
+\`\`\`xml
+<div/>
+\`\`\`
+
+**Development - internal_segment**
+- [x] Enabled
+
+
+Last Updated 12th May 2022 10:40am
+`
     // split by ** Environment **, every even line is a value
-    const featureValues = parseComment(comment)
     const environments = await fetchEnvironments(mockedConstants.project)
-    const features = await fetchFeature(mockedConstants.project, mockedConstants.flag)
-    console.log(featureValues)
+
+    const [features, segments] = await Promise.all([
+      fetchFeature(mockedConstants.project, mockedConstants.flag),
+      fetchSegments(mockedConstants.project)
+    ])
+
+    const featureValues = parseComment(comment, environments, segments)
+    const feature = mockedConstants.flag
+    await Promise.all(featureValues.map((v)=>
+        {
+          return upsertFeature(features, parseInt(feature), v.environmentKey, v.environment, v.enabled, v.value, v.segment)
+        }
+    ))
   }
   // console.log(req.body.organization, "organization")
   res.status(200).json({ name: 'John Doe' })

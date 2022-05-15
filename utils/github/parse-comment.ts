@@ -1,22 +1,36 @@
 // returns a key value set of environment
 
-export default function (comment:string) {
-    const [initial,...rest] = comment.replace(/Last Updated .*/g,"").split(/\*\*(.*?)\*\*/g)
-    let environmentValues: Record<string, {enabled:boolean, value: any, segment?: string}[]> = {}
-    let currentEnvironment = ''
-    let currentSegment = ''
-    rest.forEach((v, i)=>{
-        const isEnvironment = !!((i+1)%2)//every odd split is an environment
-        if(isEnvironment) {
+import {IEnvironments} from "../flagsmith/api/fetch-environments";
+import {ISegments} from "../flagsmith/api/fetch-segments";
+
+type IEnvironmentValues = { enabled: boolean, environment: number, environmentKey: string, value: any, segment?: number }
+
+// parses a flagsmith bot comment and returns the feature values, environment and segments
+export default function (comment: string, environments: IEnvironments, segments: ISegments) {
+    const [initial, ...rest] = comment.replace(/Last Updated .*/g, "").split(/\*\*(.*?)\*\*/g)
+    let environmentValues: IEnvironmentValues[] = []
+    let currentEnvironmentKey: string | undefined = undefined
+    let currentEnvironment: number | undefined = undefined
+    let currentSegment: number | undefined = undefined
+    rest.forEach((v, i) => {
+        const isEnvironment = !!((i + 1) % 2)//every odd split is an environment
+        if (isEnvironment) {
             const parts = v.split(' - ')
-            currentSegment = parts[1]
-            currentEnvironment = parts[0];
+            currentSegment = parts[1] ? segments.results.find((v) => v.name === parts[1])?.id : undefined
+            currentEnvironmentKey = environments.results.find((v) => v.name === parts[0])?.api_key;
+            currentEnvironment = environments.results.find((v) => v.name === parts[0])?.id;
         } else {
+            const env = environments.results.find((v) => v.api_key === currentEnvironmentKey)
             const enabled = v.includes("[x]")
             // "\n- [x] Enabled\n```undefined\n<div/>\n```\n\n" --> '<div/>'
-            environmentValues[currentEnvironment] = environmentValues[currentEnvironment] || []
-            const value = v.includes('```') ? v.replace(/.*?\`\`\`.*?\n/s,"").replace(/```.*/s,"").trimEnd() : null
-            environmentValues[currentEnvironment].push({enabled:enabled, segment: currentSegment, value})
+            const value = v.includes('```') ? v.replace(/.*?```.*?\n/s, "").replace(/```.*/s, "").trimEnd() : null
+            environmentValues.push({
+                enabled: enabled,
+                segment: currentSegment,
+                value,
+                environmentKey: currentEnvironmentKey!,
+                environment: currentEnvironment!
+            })
         }
     })
 
