@@ -69,7 +69,6 @@ export default async function handler(
     const associatedProject = body.data?.new_state?.feature?.project?.id|| mockedConstants.project;
     const featureStates = await fetchFeature(`${associatedProject}`, `${associatedFlag}`)
     const data = createCommentText(featureStates)
-    console.log("Sending", data)
     const resGh = await editComment(mockedConstants.githubOwner, mockedConstants.githubRepo, mockedConstants.githubComment, data)
     // Step 2: If flag has a github issue comment, edit it with the new feature state
     res.status(200).json(resGh)

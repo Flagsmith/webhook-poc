@@ -244,7 +244,6 @@ export default async function handler(
   res: NextApiResponse
 ) {
   const body:Data = req.body;
-  console.log("Sender", body.sender)
   if (true || body.sender.type === 'User') {
     // set feature states based on comment
     // gives us => ["production, "\n- [x] Enabled\n```undefined\n<div/>\n```\n\n", "Development", "\n - []...]

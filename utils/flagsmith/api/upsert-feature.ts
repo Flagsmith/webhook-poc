@@ -52,8 +52,6 @@ export default async function (features:IFeaturesResults[],feature:number, envir
     })
     const payload = {environment,feature,feature_segment: segment, enabled:true, feature_state_value: getTypedValue(value)}
     if(!matchingFeature) {
-        console.log("INSERT",`https://api.flagsmith.com/api/v1/environments/${environment_key}/featurestates/`, payload )
-
         return fetch(`https://api.flagsmith.com/api/v1/environments/${environment_key}/featurestates/`,{
           method:"POST",
             headers: {
@@ -66,7 +64,6 @@ export default async function (features:IFeaturesResults[],feature:number, envir
             return res
         })
     } else {
-        console.log("UPDATE",`https://api.flagsmith.com/api/v1/environments/${environment_key}/featurestates/${matchingFeature?.id}/`, JSON.stringify({...matchingFeature,...payload}) )
         return fetch(`https://api.flagsmith.com/api/v1/environments/${environment_key}/featurestates/${matchingFeature?.id}/`,{
             method:"PUT",
             headers: {
@@ -75,7 +72,6 @@ export default async function (features:IFeaturesResults[],feature:number, envir
             },
             body: JSON.stringify({...matchingFeature,...payload})
         }).then((res)=>res.text()).then((res)=>{
-            console.log(res)
             return res
         })
     }
