@@ -242,6 +242,7 @@ export default async function handler(
   res: NextApiResponse
 ) {
   const body:Data = req.body;
+  console.log("Sender", body.sender)
   if (body.sender.type === 'User') {
     console.log(body.issue.id)
     // set feature states based on comment
