@@ -4,6 +4,8 @@ import fetchFeature from "../../utils/flagsmith/api/fetch-feature";
 import mockedConstants from "../../utils/mockedConstants";
 import createCommentText from "../../utils/github/create-comment-text";
 import editComment from "../../utils/github/api/edit-comment";
+import createComment from "../../utils/github/api/create-comment";
+import fetchExternalResources from '../../utils/flagsmith/api/fetch-external-resources';
 
 type Data =  {
     data: {
@@ -65,11 +67,13 @@ export default async function handler(
     res: NextApiResponse
 ) {
     const body:Data = req.body;
-    const associatedFlag = body.data?.new_state?.feature?.id|| mockedConstants.flag;
-    const associatedProject = body.data?.new_state?.feature?.project?.id|| mockedConstants.project;
+    const associatedFlag = body.data?.new_state?.feature?.id;
+    const associatedProject = body.data?.new_state?.feature?.project?.id;
     const featureStates = await fetchFeature(`${associatedProject}`, `${associatedFlag}`)
+    const fex = await fetchExternalResources('1')
     const data = createCommentText(featureStates)
-    const resGh = await editComment(mockedConstants.githubOwner, mockedConstants.githubRepo, mockedConstants.githubComment, data)
-    // Step 2: If flag has a github issue comment, edit it with the new feature state
-    res.status(200).json(resGh)
+    var pathname = new URL(fex.results[0].external_resource.url).pathname;
+    const splitURL = pathname.toString().split("/");
+    const resCreateGh = await createComment(splitURL[1], splitURL[2], splitURL[4], data)
+    res.status(200).json(resCreateGh)
 }

@@ -32,7 +32,7 @@ export interface ISegments {
 
 export default function (projectId:string) {
     const key = process.env.FLAGSMITH_TOKEN
-    return fetch(`https://api.flagsmith.com/api/v1/projects/${projectId}/segments/`,{
+    return fetch(`${process.env.BASE_URL}projects/${projectId}/segments/`,{
         headers: {
             AUTHORIZATION: `Token ${process.env.FLAGSMITH_TOKEN}`
         }

@@ -263,33 +263,32 @@ export default async function handler(
 
 Last Updated 12th May 2022 10:40am
 `
+    // try {
+    //   // split by ** Environment **, every even line is a value
+    //   const environments = await fetchEnvironments(mockedConstants.project)
 
-    try {
-      // split by ** Environment **, every even line is a value
-      const environments = await fetchEnvironments(mockedConstants.project)
+    //   console.log("Fetching features")
 
-      console.log("Fetching features")
+    //   const [features, segments] = await Promise.all([
+    //     fetchFeature(mockedConstants.project, mockedConstants.flag),
+    //     fetchSegments(mockedConstants.project)
+    //   ])
 
-      const [features, segments] = await Promise.all([
-        fetchFeature(mockedConstants.project, mockedConstants.flag),
-        fetchSegments(mockedConstants.project)
-      ])
+    //   console.log("Fetched features")
 
-      console.log("Fetched features")
-
-      const featureValues = parseComment(comment, environments, segments)
-      const feature = mockedConstants.flag
-      await Promise.all(featureValues.map((v)=>
-          {
-            return upsertFeature(features, parseInt(feature), v.environmentKey, v.environment, v.enabled, v.value, v.segment)
-          }
-      ))
-    }catch (e) {
-      console.log("ERROR", e)
-    }
+    //   const featureValues = parseComment(comment, environments, segments)
+    //   const feature = mockedConstants.flag
+    //   await Promise.all(featureValues.map((v)=>
+    //       {
+    //         return upsertFeature(features, parseInt(feature), v.environmentKey, v.environment, v.enabled, v.value, v.segment)
+    //       }
+    //   ))
+    // }catch (e) {
+    //   console.log("ERROR", e)
+    // }
 
   }
   // console.log(req.body.organization, "organization")
-  res.status(200).json({ name: 'John Doe' })
+  // res.status(200).json({ name: 'John Doe' })
 }
 

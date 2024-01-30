@@ -79,7 +79,7 @@ export default async function (features:IFeaturesResults[],feature:number, envir
     })
     const payload = {environment,feature,feature_segment: segment, enabled, feature_state_value: getTypedValue(value)}
     if(!matchingFeature) {
-        return fetch(`https://api.flagsmith.com/api/v1/environments/${environment_key}/featurestates/`,{
+        return fetch(`${process.env.BASE_URL}environments/${environment_key}/featurestates/`,{
           method:"POST",
             headers: {
                 AUTHORIZATION: `Token ${process.env.FLAGSMITH_TOKEN}`,
@@ -91,7 +91,7 @@ export default async function (features:IFeaturesResults[],feature:number, envir
         })
     } else {
         if(segment) {
-            return fetch(`https://api.flagsmith.com/api/v1/features/featurestates/${matchingFeature?.id}/`,{
+            return fetch(`${process.env.BASE_URL}features/featurestates/${matchingFeature?.id}/`,{
                 method:"PUT",
                 headers: {
                     AUTHORIZATION: `Token ${process.env.FLAGSMITH_TOKEN}`,
@@ -108,7 +108,7 @@ export default async function (features:IFeaturesResults[],feature:number, envir
                 return res
             })
         }
-        return fetch(`https://api.flagsmith.com/api/v1/environments/${environment_key}/featurestates/${matchingFeature?.id}/`,{
+        return fetch(`${process.env.BASE_URL}environments/${environment_key}/featurestates/${matchingFeature?.id}/`,{
             method:"PUT",
             headers: {
                 AUTHORIZATION: `Token ${process.env.FLAGSMITH_TOKEN}`,

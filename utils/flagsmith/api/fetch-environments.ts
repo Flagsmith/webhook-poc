@@ -18,7 +18,7 @@ export interface IEnvironments {
 
 export default function (project:string) {
     const key = process.env.FLAGSMITH_TOKEN
-    return fetch(`https://api.flagsmith.com/api/v1/environments/?project=${project}`,{
+    return fetch(`${process.env.BASE_URL}environments/?project=${project}`,{
         headers: {
             AUTHORIZATION: `Token ${process.env.FLAGSMITH_TOKEN}`
         }
