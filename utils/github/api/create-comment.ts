@@ -1,8 +1,9 @@
 import githubClient from "./github-client";
 
 // Post a comment to a given issue
-export default async function (owner:string, repo:string, issue:number, body: string) {
-    const token = await githubClient(`${process.env.GITHUB_INSTALLATION_ID}`)
+export default async function (owner:string, repo:string, issue:number, body: string, installationId: string) {
+    // const token = await githubClient(`${process.env.GITHUB_INSTALLATION_ID}`)
+    const token = installationId
     await fetch(`https://api.github.com/repos/${owner}/${repo}/issues/${issue}/comments`, {
         method: "POST",
         body: JSON.stringify({body}),

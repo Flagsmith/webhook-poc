@@ -25,10 +25,9 @@ export interface IProjectFeatures {
     previous?: any;
     results: IProjectFeature[];
 }
-
-export default function () {
+export default function (featureId: string) {
     const key = process.env.FLAGSMITH_TOKEN
-    return fetch(`${process.env.BASE_URL}external-resource/8/features/`,{
+    return fetch(`${process.env.BASE_URL}features/${featureId}/external-resources/`,{
         headers: {
             AUTHORIZATION: `Token ${process.env.FLAGSMITH_TOKEN}`
         }
