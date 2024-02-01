@@ -108,14 +108,15 @@ export default async function (project:string, feature:string) {
     const res:IFeaturesResults[] =  featureStates.map((v,i)=>{
         return {
             environment: environments.results[i],
-            features: v.results.map((v:IFeature)=>{
+            features: v.results?.map((v:IFeature)=>{
                 const featureName = featureProject.results.find(item => item.id === v.feature)?.name;
-                const environmentFeatureSegments = featureSegments.find((f)=>f.environment === v.environment)?.featureSegments
-                const segment = !!v.feature_segment && environmentFeatureSegments?.results.find((fs)=>fs.id === v.feature_segment)
+                // const environmentFeatureSegments = featureSegments.find((f)=>f.environment === v.environment)?.featureSegments
+                // console.log('DEBUG: environmentFeatureSegments:', environmentFeatureSegments)
+                // const segment = !!v.feature_segment && environmentFeatureSegments?.results.find((fs)=>fs.id === v.feature_segment)
                 return {
                     ...v,
                     feature_name: featureName,
-                    segment: segment ? segments.results.find((v)=>v.id === segment.segment) : null
+                    // segment: segment ? segments.results.find((v)=>v.id === segment.segment) : null
                 }
             })
         }

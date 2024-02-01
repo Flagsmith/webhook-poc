@@ -66,15 +66,17 @@ export default async function handler(
     req: NextApiRequest,
     res: NextApiResponse
 ) {
-    const body:Data = req.body;
-    const associatedFlag = body.data?.new_state?.feature?.id || 1;
-    const associatedProject = body.data?.new_state?.feature?.project?.id || 1;
+    const body:Data = req.body
+    const featureId = JSON.parse(body).data?.new_state?.feature?.id
+    const projectId = JSON.parse(body).data?.new_state?.feature?.project?.id
+    const installationId = JSON.parse(body).installation_id
+    const associatedFlag = featureId || 111
+    const associatedProject = projectId || 111
     const featureStates = await fetchFeature(`${associatedProject}`, `${associatedFlag}`)
-    const fex = await fetchExternalResources(associatedFlag)
     const data = createCommentText(featureStates)
-    // console.log('DEBUG: fex.results[0].url:', fex.results[0])
-    var pathname = new URL(fex.results[0].url).pathname;
-    const splitURL = pathname.toString().split("/");
-    const resCreateGh = await createComment(splitURL[1], splitURL[2], splitURL[4], data, fex.results[0].resources_id)
+    const url = JSON.parse(body).external_resources[0].url
+    var pathname = new URL(url).pathname
+    const splitURL = pathname.toString().split("/")
+    const resCreateGh = await createComment(splitURL[1], splitURL[2], splitURL[4], data, installationId)
     res.status(200).json(resCreateGh)
 }
