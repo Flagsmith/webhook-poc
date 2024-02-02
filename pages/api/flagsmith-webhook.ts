@@ -67,14 +67,14 @@ export default async function handler(
     res: NextApiResponse
 ) {
     const body:Data = req.body
-    const featureId = JSON.parse(body).data?.new_state?.feature?.id
-    const projectId = JSON.parse(body).data?.new_state?.feature?.project?.id
-    const installationId = JSON.parse(body).installation_id
+    const featureId = body.data?.new_state?.feature?.id
+    const projectId = body.data?.new_state?.feature?.project?.id
+    const installationId = body.data?.installation_id
     const associatedFlag = featureId || 111
     const associatedProject = projectId || 111
     const featureStates = await fetchFeature(`${associatedProject}`, `${associatedFlag}`)
     const data = createCommentText(featureStates)
-    const url = JSON.parse(body).external_resources[0].url
+    const url = body.external_resources[0].url
     var pathname = new URL(url).pathname
     const splitURL = pathname.toString().split("/")
     const resCreateGh = await createComment(splitURL[1], splitURL[2], splitURL[4], data, installationId)
