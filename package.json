@@ -10,6 +10,8 @@
   },
   "dependencies": {
     "@octokit/auth-app": "^3.6.1",
+    "@octokit/auth-oauth-app": "^7.0.1",
+    "cors": "^2.8.5",
     "dotenv": "^16.0.0",
     "fast-xml-parser": "^4.0.7",
     "htmlparser2": "^8.0.1",

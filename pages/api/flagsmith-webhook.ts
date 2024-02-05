@@ -6,6 +6,7 @@ import createCommentText from "../../utils/github/create-comment-text";
 import editComment from "../../utils/github/api/edit-comment";
 import createComment from "../../utils/github/api/create-comment";
 import fetchExternalResources from '../../utils/flagsmith/api/fetch-external-resources';
+import fetchRepositories from '../../utils/github/api/fetch-repositories';
 
 type Data =  {
     data: {
@@ -78,5 +79,5 @@ export default async function handler(
     var pathname = new URL(url).pathname
     const splitURL = pathname.toString().split("/")
     const resCreateGh = await createComment(splitURL[1], splitURL[2], splitURL[4], data, installationId)
-    res.status(200).json(resCreateGh)
+    return res.status(200).json({ text: 'Hello' })
 }
