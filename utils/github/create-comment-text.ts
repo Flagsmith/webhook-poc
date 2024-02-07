@@ -8,24 +8,23 @@ const openingMarkdown = (language:string)=>`\`\`\`${language}`
 const closingMarkdown = `\`\`\``
 
 // Based on a set of feature states across multiple environments, returns markdown text for a comment
-export default function (data:IFeaturesResults[]) {
-    const featureName = data && data[0] && data[0].features && data[0].features[0].feature_name
+export default function generateFeatureString(name: string, featureStates: IFeaturesStates) {
     const lastUpdatedString = `Last Updated ${moment().format("Do MMM YYYY HH:mma")}`
-    return `${title} (${featureName}):
-${data.map((featureResults)=>{
-        return `${featureResults?.features?.map((v)=>{
-            let featureValue = v.feature_state_value.integer_value || v.feature_state_value.string_value || v.feature_state_value.boolean_value
-            const hasFeatureValue = featureValue!=null && typeof featureValue!='undefined'
-            let language = hasFeatureValue ? parseLanguage(featureValue) : ''
-            const featureValueString =  `
+    return `${title} (${name}):
+${featureStates?.map((v)=>{
+    let featureIntegerValue = v?.integer_value || ''
+    let featureStringValue = v?.string_value || ''
+    let featureBooleanValue = v?.boolean_value || ''
+    // const hasFeatureValue = featureStringValue!=null && typeof featureStringValue!='undefined'
+    let language = featureIntegerValue ? parseLanguage(featureStringValue) : ''
+    const featureValueString =  `
 ${openingMarkdown(language||'')}
-${hasFeatureValue?featureValue:mockedConstants.featureNoValue}
+${featureStringValue?featureStringValue:mockedConstants.featureNoValue}
 ${closingMarkdown}
 `
-            return `**${featureResults.environment.name}${v.segment?.name?` - ${v.segment.name}`:""}**
-- [${v.enabled?'x':' '}] ${v.enabled?'Enabled': 'Disabled'}${featureValueString}`
+            return `**${v.environment_name}${v?.segment_name?`  - ${v.segment_name}`:""}**\n\r
+- [${v.feature_value?'x':' '}] ${v.feature_value?'Enabled': 'Disabled'}${featureValueString}`
 }).join("\n")}
-`}).join("\n")}
 
 ${lastUpdatedString}
 `

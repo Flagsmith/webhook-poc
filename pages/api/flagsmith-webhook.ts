@@ -1,11 +1,8 @@
 // Next.js API route support: https://nextjs.org/docs/api-routes/introduction
 import type { NextApiRequest, NextApiResponse } from 'next'
-import fetchFeature from "../../utils/flagsmith/api/fetch-feature";
 import mockedConstants from "../../utils/mockedConstants";
-import createCommentText from "../../utils/github/create-comment-text";
 import editComment from "../../utils/github/api/edit-comment";
 import createComment from "../../utils/github/api/create-comment";
-import fetchExternalResources from '../../utils/flagsmith/api/fetch-external-resources';
 import fetchRepositories from '../../utils/github/api/fetch-repositories';
 
 type Data =  {
@@ -68,14 +65,12 @@ export default async function handler(
     res: NextApiResponse
 ) {
     const body:Data = req.body
-    const featureId = body.data?.new_state?.feature?.id
-    const projectId = body.data?.new_state?.feature?.project?.id
+    const featureId = body?.data?.id
+    const featureName = body?.data?.name
+    const featureStates = body?.data?.feature_states
+    const data = createCommentText(featureName, featureStates)
     const installationId = body.data?.installation_id
-    const associatedFlag = featureId || 111
-    const associatedProject = projectId || 111
-    const featureStates = await fetchFeature(`${associatedProject}`, `${associatedFlag}`)
-    const data = createCommentText(featureStates)
-    const url = body.external_resources[0].url
+    const url = body?.external_resources[0].url
     var pathname = new URL(url).pathname
     const splitURL = pathname.toString().split("/")
     const resCreateGh = await createComment(splitURL[1], splitURL[2], splitURL[4], data, installationId)
