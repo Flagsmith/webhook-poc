@@ -2,6 +2,7 @@
 import type { NextApiRequest, NextApiResponse } from 'next'
 import mockedConstants from "../../utils/mockedConstants";
 import editComment from "../../utils/github/api/edit-comment";
+import createCommentText from "../../utils/github/create-comment-text";
 import createComment from "../../utils/github/api/create-comment";
 import fetchRepositories from '../../utils/github/api/fetch-repositories';
 
@@ -68,7 +69,8 @@ export default async function handler(
     const featureId = body?.data?.id
     const featureName = body?.data?.name
     const featureStates = body?.data?.feature_states
-    const data = createCommentText(featureName, featureStates)
+    const eventType = body?.event_type
+    const data = createCommentText(featureName, featureStates, eventType)
     const installationId = body.data?.installation_id
     const url = body?.external_resources[0].url
     var pathname = new URL(url).pathname
