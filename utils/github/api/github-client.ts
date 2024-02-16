@@ -4,7 +4,6 @@ let _token:string;
 
 //authorises with GitHub
 export default async function (installationId:string) {
-    if(_token) return _token
     console.log("DEBUG: process.env.GITHUB_PEM:", process.env.GITHUB_PEM)
     console.log("DEBUG: installationId:", installationId)
     const auth = createAppAuth({
