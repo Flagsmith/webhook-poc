@@ -28,7 +28,7 @@ export default function generateFeatureString(name: string, featureStates: IFeat
     const isUpdate = event_type === 'FLAG_UPDATED' 
     const lastUpdatedString = `Last Updated ${moment().format("Do MMM YYYY HH:mma")}`
     const updatedText = `### The Flagsmith Feature ${name} was updated in the environment ${featureStates[0].environment_name}`
-    return `${isUpdate ? updatedText : title `(${name})`}:
+    return `${isUpdate ? updatedText :  `title (${name})`}:
 ${featureStates?.map((v: IFeaturesState)=>{
     let featureValue = isInteger(v.integer_value) ? v.integer_value :
     isString(v.string_value) ? v.string_value :
