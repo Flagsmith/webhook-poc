@@ -72,9 +72,21 @@ export default async function handler(
     const eventType = body?.event_type
     const data = createCommentText(featureName, featureStates, eventType)
     const installationId = body.data?.installation_id
-    const url = body?.external_resources[0].url
-    var pathname = new URL(url).pathname
-    const splitURL = pathname.toString().split("/")
-    const resCreateGh = await createComment(splitURL[1], splitURL[2], splitURL[4], data, installationId)
-    return res.status(200).json({ text: 'Hello' })
+    if (eventType === "FLAG_UPDATED") {
+        (async () => {
+            for (const resource of body?.external_resources || []) {
+                const url = resource.url;
+                var pathname = new URL(url).pathname
+                const splitURL = pathname.toString().split("/")
+                const resCreateGh = await createComment(splitURL[1], splitURL[2], splitURL[4], data, installationId);
+            }
+            res.status(200).json({ text: 'Hello' });
+        })();
+    } else {
+        const url = body?.external_resources[body?.external_resources.length - 1].url
+        var pathname = new URL(url).pathname
+        const splitURL = pathname.toString().split("/")
+        const resCreateGh = await createComment(splitURL[1], splitURL[2], splitURL[4], data, installationId)
+        return res.status(200).json({ text: 'Hello' })
+    }
 }
