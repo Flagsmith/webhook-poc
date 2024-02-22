@@ -4,7 +4,6 @@ import githubClient from "./github-client";
 export default async function (installationId: string, owner: string, name: string) {
     const authType = 'user'
     const token = await githubClient(installationId)
-    console.log('DEBUG: token: pull', token)
     const url = `https://api.github.com/repos/novakzaballa/novak-flagsmith-example/pulls`
     return await fetch(url, {
         method: "GET",

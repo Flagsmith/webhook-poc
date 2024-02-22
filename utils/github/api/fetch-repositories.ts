@@ -4,7 +4,6 @@ import githubClient from "./github-client";
 export default async function (installationId: string) {
     const authType = 'user'
     const token = await githubClient(installationId)
-    console.log('DEBUG: token:', token)
     const url = `https://api.github.com/installation/repositories`
     return await fetch(url, {
         method: "GET",

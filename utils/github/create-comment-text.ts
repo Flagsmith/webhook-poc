@@ -25,7 +25,12 @@ export default function generateFeatureString(name: string, featureStates: IFeat
     const isInteger = value => Number.isInteger(value);
     const isString = value => typeof value === 'string';
     const isBoolean = value => typeof value === 'boolean';
-    const isUpdate = event_type === 'FLAG_UPDATED' 
+    const isUpdate = event_type === 'FLAG_UPDATED'
+    const isRemoved = event_type === 'FEATURE_EXTERNAL_RESOURCE_REMOVED'
+    const DeleteText = `### The feature flag ${name} was unlinked from the issue/PR`
+    if(isRemoved){
+        return `${DeleteText}`
+    }
     const lastUpdatedString = `Last Updated ${moment().format("Do MMM YYYY HH:mma")}`
     const updatedText = `### The Flagsmith Feature ${name} was updated in the environment ${featureStates[0].environment_name}`
     return `${isUpdate ? updatedText :  `title (${name})`}:

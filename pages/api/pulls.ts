@@ -8,7 +8,6 @@ export default async function handler(
     res: NextApiResponse
 ) {
     const body:Data = req.query
-    console.log('DEBUG: body: 2:', body?.installation_id)
     const installationId = body?.installation_id
     const resGetRepos = await fetchPulls(installationId)
     res.status(200).json(resGetRepos)

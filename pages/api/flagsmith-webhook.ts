@@ -82,6 +82,12 @@ export default async function handler(
             }
             res.status(200).json({ text: 'Hello' });
         })();
+    } else if (eventType === "FEATURE_EXTERNAL_RESOURCE_REMOVED") {
+        const url = body?.data?.url
+        var pathname = new URL(url).pathname
+        const splitURL = pathname.toString().split("/")
+        const resCreateGh = await createComment(splitURL[1], splitURL[2], splitURL[4], data, installationId)
+        return res.status(200).json({ text: 'Hello' })
     } else {
         const url = body?.external_resources[body?.external_resources.length - 1].url
         var pathname = new URL(url).pathname

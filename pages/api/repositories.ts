@@ -10,6 +10,5 @@ export default async function handler(
     const body:Data = req.query
     const installationId = body?.installation_id
     const resGetRepos = await fetchRepositories(installationId)
-    console.log('DEBUG: resGetRepos:', resGetRepos)
     res.status(200).json(resGetRepos)
 }
